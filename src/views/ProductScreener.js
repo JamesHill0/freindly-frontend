@@ -118,7 +118,7 @@ function ProductScreener(props) {
 
         {error && (
           <div className="flex flex-row justify-center pt-4">
-            <div className="w-2/12 max-w-full bg-red-200 border border-red-500 rounded p-2 text-sm">
+            <div className="w-4/12 max-w-full bg-red-200 border border-red-500 rounded p-2 text-sm">
               An error has been encountered:
               <pre className="bg-red-300 p-2">{error}</pre>
               Please contact an administrator.
@@ -135,7 +135,7 @@ function ProductScreener(props) {
                     Products Found ({products.length}):
                   </span>
                 </div>
-                <div class="flex flex-row">
+                <div className="flex flex-row">
                   <Button
                     {...getViewTypeProps("tile")}
                     onClick={onClickView("tile")}

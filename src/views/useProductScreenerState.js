@@ -1,8 +1,6 @@
-import { APIS, PRODUCTS } from "../constants";
+import { getApiProducts, getServices, saveProducts } from "../services/api";
 import { useEffect, useState } from "react";
 
-import Axios from "axios";
-import { getServices } from "../services/api";
 import { toast } from "react-toastify";
 
 export const useProductScreenerState = (props) => {
@@ -17,19 +15,15 @@ export const useProductScreenerState = (props) => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    // setApis(APIS);
     const fetchServices = async () => {
-      const result = await Axios.get(`localhost:5000/api/v1/apis`)
+      await getServices()
         .then((response) => {
-          return response;
+          setApis(response.data);
         })
-        .catch((e) => {
-          console.error(e);
-          setError(`${e.name} - ${e.message}`);
+        .catch((error) => {
+          setError(`${error.name} - ${error.message}`);
           return [];
         });
-      console.log(result);
-      setApis(result);
     };
     fetchServices();
   }, []);
@@ -49,10 +43,6 @@ export const useProductScreenerState = (props) => {
     }
   }, [keyword]);
 
-  // useEffect(() => {
-  //   if (products.length > 0) setProductsLoading(false);
-  // }, [products]);
-
   const isProductSaving = (name) => {
     return productsSaving.includes(name);
   };
@@ -70,22 +60,56 @@ export const useProductScreenerState = (props) => {
 
     // TODO query products
     // keyword.trim()
+    setError("");
     setProductsLoading(true);
 
-    setTimeout(function () {
-      setProducts(PRODUCTS);
-      setProductsLoading(false);
-    }, 1000);
+    // setTimeout(function () {
+    //   // setProducts(PRODUCTS);
+    //   setProductsLoading(false);
+    // }, 1000);
+
+    const fetchApiProducts = async () => {
+      await getApiProducts(api, keyword.trim())
+        .then((response) => {
+          setProducts(response.data);
+        })
+        .catch((error) => {
+          setError(`${error.name} - ${error.message}`);
+          return [];
+        })
+        .finally(() => {
+          setProductsLoading(false);
+        });
+    };
+    fetchApiProducts();
   };
 
   const onClickProductSave = (name) => (e) => {
     setProductsSaving((ps) => [...ps, name]);
+    setError("");
 
-    setTimeout(function () {
-      setProducts((products) => products.filter((p) => name !== p.name));
-      setProductsSaving((ps) => products.filter((p) => p !== name));
-      toast(`Saved: ${name}`);
-    }, 5000);
+    // setTimeout(function () {
+    //   setProducts((products) => products.filter((p) => name !== p.name));
+    //   setProductsSaving((ps) => products.filter((p) => p !== name));
+    //   toast(`Saved: ${name}`);
+    // }, 5000);
+
+    const product = products.filter((p) => name === p.name);
+    const uploadProduct = async () => {
+      await saveProducts(api, product)
+        .then((response) => {
+          toast.info(`Saved: ${name}`);
+          setProducts((products) => products.filter((p) => name !== p.name));
+        })
+        .catch((error) => {
+          setError(`${error.name} - ${error.message}`);
+          return [];
+        })
+        .finally(() => {
+          setProductsSaving((products) => products.filter((p) => p !== name));
+        });
+    };
+    uploadProduct();
   };
 
   const onClickProductDiscard = (name) => (e) => {
