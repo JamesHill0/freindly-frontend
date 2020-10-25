@@ -4,7 +4,7 @@ function Select({ children, ...props }) {
   return (
     <div className="relative">
       <select
-        className="block appearance-none w-full bg-gray-200 border-2 border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+        className="block appearance-none w-full bg-gray-200 border-2 border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-blue-600"
         {...props}
       >
         {children}

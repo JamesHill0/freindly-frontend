@@ -5,7 +5,7 @@ import React from "react";
 function Card({ children, className = "", ...props }) {
   return (
     <div
-      className={`flex flex-col max-w-sm rounded overflow-hidden shadow-lg bg-gray-100 my-4 ${className}`}
+      className={`flex flex-col max-w-sm rounded overflow-hidden shadow-2xl border border-gray-200 bg-gray-100 my-4 ${className}`}
       {...props}
     >
       {children}
@@ -15,7 +15,7 @@ function Card({ children, className = "", ...props }) {
 
 function CardHeader({ children, ...props }) {
   return (
-    <div className={`px-4 py-2 border-b-2`} {...props}>
+    <div className={`px-4 py-2 border-b-2 bg-indigo-300`} {...props}>
       <span className="text-xl font-bold">{children}</span>
     </div>
   );

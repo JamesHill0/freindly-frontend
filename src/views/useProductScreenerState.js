@@ -1,6 +1,8 @@
 import { APIS, PRODUCTS } from "../constants";
 import { useEffect, useState } from "react";
 
+import Axios from "axios";
+import { getServices } from "../services/api";
 import { toast } from "react-toastify";
 
 export const useProductScreenerState = (props) => {
@@ -11,14 +13,25 @@ export const useProductScreenerState = (props) => {
   const [allowSubmit, setAllowSubmit] = useState(false);
   const [productsLoading, setProductsLoading] = useState(false);
   const [productsSaving, setProductsSaving] = useState([]);
-  // const [error, setError] = useState("");
+  const [viewType, setViewType] = useState("tile");
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    // TODO get default apis
-    setApis(APIS);
-
-    // fake
-    setProducts(PRODUCTS);
+    // setApis(APIS);
+    const fetchServices = async () => {
+      const result = await Axios.get(`localhost:5000/api/v1/apis`)
+        .then((response) => {
+          return response;
+        })
+        .catch((e) => {
+          console.error(e);
+          setError(`${e.name} - ${e.message}`);
+          return [];
+        });
+      console.log(result);
+      setApis(result);
+    };
+    fetchServices();
   }, []);
 
   // set selected api when apis is changed
@@ -71,7 +84,7 @@ export const useProductScreenerState = (props) => {
     setTimeout(function () {
       setProducts((products) => products.filter((p) => name !== p.name));
       setProductsSaving((ps) => products.filter((p) => p !== name));
-      toast("Wow so easy");
+      toast(`Saved: ${name}`);
     }, 5000);
   };
 
@@ -81,8 +94,9 @@ export const useProductScreenerState = (props) => {
     toast.info(`Discarded: ${name}`);
   };
 
-  // validation
-  // const
+  const onClickView = (name) => (e) => {
+    setViewType(name);
+  };
 
   return {
     apis,
@@ -91,6 +105,8 @@ export const useProductScreenerState = (props) => {
     api,
     allowSubmit,
     productsLoading,
+    viewType,
+    error,
     isProductSaving,
     // error,
     onChangeApi,
@@ -98,5 +114,6 @@ export const useProductScreenerState = (props) => {
     onSubmit,
     onClickProductSave,
     onClickProductDiscard,
+    onClickView,
   };
 };
