@@ -1,6 +1,6 @@
 import Axios from "axios";
 
-let API_URL = "http://localhost:5000/api/v1";
+let API_URL = "http://https://friendlyapi.azurewebsites.net";
 
 async function getServices() {
   return await Axios.get(`${API_URL}/apis`);

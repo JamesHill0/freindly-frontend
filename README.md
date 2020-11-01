@@ -63,6 +63,12 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/ad
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
 
+If you are going to deploy to azure make sure you have the azure cli installed in your system and logged-in first via the command
+
+az login
+
+Execute the makefile script once you are done.
+
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
